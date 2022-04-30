@@ -13,6 +13,8 @@ songTitle = input("song title: ")
 response = requests.get('http://localhost:8080/musicshop-1.0/api/albums/' + songTitle)
 albums = response.json()
 
+print(response.json())
+
 albumCount = 1
 
 for album in albums:
@@ -41,9 +43,16 @@ for album in albums:
 
 
 # User Options
-# print("What would you like to do next?")
-# print()
-# print("1 -> add searched album/s to cart")
-# print("2 -> search for another album")
-# print("3 -> quit")
-# print()
+print("What would you like to do next?")
+print()
+print("1 -> add searched album/s to cart")
+print("2 -> search for another album")
+print("3 -> quit")
+print()
+
+# add search result to cart
+# albumNumber = input("number: ")
+# albumNumber = int(albumNumber) -1
+# print("Album: " + albums[albumNumber]['title'])
+# print("Medium: " + albums[albumNumber]['mediumType'])
+# print("added to cart!")
