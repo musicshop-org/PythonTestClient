@@ -1,66 +1,73 @@
 import requests
 import json
 
-def musicSearch():
+def music_search():
     # Search
     print()
     print("Enter a song title of an album you are interested in")
-    songTitle = input("song title: ")
+    song_title = input("song title: ")
 
-    response = requests.get('http://localhost:8080/musicshop-1.0/api/albums/' + songTitle)
+    response = requests.get('http://localhost:8080/musicshop-1.0/api/albums/' + song_title)
     albums = response.json()
 
     print(response.json())
 
-    albumCount = 1
+    album_count = 1
 
     for album in albums:
         print()
-        print("ALBUM " + str(albumCount))
+        print("ALBUM " + str(album_count))
         print("Title:   " + album['title'])
         print("Medium:  " + album['mediumType'])
         print("Price:   " + str(album['price']) + " €")
         print("Stock:   " + str(album['stock']))
 
         print()
-        print("SONGS OF ALBUM " + str(albumCount))
+        print("SONGS OF ALBUM " + str(album_count))
 
-        songCount = 1
+        song_count = 1
 
         for song in album['songs']:
-            print('#' + str(songCount) + ' ' + song['title'])
+            print('#' + str(song_count) + ' ' + song['title'])
 
             for artist in song['artists']:
                 print(artist['name'])
 
-            songCount += 1
+            song_count += 1
 
-        albumCount += 1
+        album_count += 1
         print()
 
     return albums
 
-def addToCart(albums):
-    albumNumber = input("number: ")
-    dictionary = {
-        "name": "achim"
-    }
-    dictionary = json.dumps(dictionary)
-    album = json.dumps(albums[int(albumNumber)-1])
+def add_to_cart(albums):
+    # needed: title of album, medium type, price, stock, quantity
+    album_number = input("number: ")
+    quantity = input("quantity: ")
+    album = albums[int(album_number)-1]
 
-    response = requests.post('http://localhost:8080/musicshop-1.0/api/test1', json=album)
+    req = {
+        "title": album['title'],
+        "mediumType": album['mediumType'],
+        "price": album['price'],
+        "stock": album['stock'],
+        "quantityToAddToCart": quantity
+    }
+
+    # response = requests.post('http://localhost:8080/musicshop-1.0/api/test1', json=album)
+    # print(response)
+    response = requests.post('http://localhost:8080/musicshop-1.0/api/albums/addToCart', json=req)
     print(response)
-    response = requests.post('http://localhost:8080/musicshop-1.0/api/albums/addToCart', json=album)
-    print(response)
+    print(response.text)
 
     # add search result to cart
-    albumNumber = int(albumNumber) - 1
-    print("Album: " + albums[albumNumber]['title'])
-    print("Medium: " + albums[albumNumber]['mediumType'])
+    album_number = int(album_number) - 1
+    print("Album: " + albums[album_number]['title'])
+    print("Medium: " + albums[album_number]['mediumType'])
     print("added to cart!")
     print()
 
-def userAction():
+def user_action():
     print()
     print("What would you like to do next?")
     print()
@@ -71,27 +78,27 @@ def userAction():
     action = input("choose action: ")
     return action
 
-def startClient():
+def start_client():
     # Greeting
     print()
     print("Welcome to our music shop! :)")
-    choosenAction = '2'
+    chosen_action = '2'
     quit = 1
 
     while quit > 0:
-        if choosenAction == '1':
-            addToCart(albums)
-            choosenAction = userAction()
-        elif choosenAction == '2':
-            albums = musicSearch()
-            choosenAction = userAction()
-        elif choosenAction == '3':
+        if chosen_action == '1':
+            add_to_cart(albums)
+            chosen_action = user_action()
+        elif chosen_action == '2':
+            albums = music_search()
+            chosen_action = user_action()
+        elif chosen_action == '3':
             quit = 0
         else:
             print()
             print("wrong input try again")
-            choosenAction = userAction()
+            chosen_action = user_action()
 
 #start Client
-startClient()
+start_client()
 
