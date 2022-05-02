@@ -1,8 +1,8 @@
 import requests
-import json
+
 
 def music_search():
-    # Search
+
     print()
     print("Enter a song title of an album you are interested in")
     song_title = input("song title: ")
@@ -10,11 +10,10 @@ def music_search():
     response = requests.get('http://localhost:8080/musicshop-1.0/api/albums/' + song_title)
     albums = response.json()
 
-    print(response.json())
-
     album_count = 1
 
     for album in albums:
+
         print()
         print("ALBUM " + str(album_count))
         print("Title:   " + album['title'])
@@ -40,8 +39,9 @@ def music_search():
 
     return albums
 
+
 def add_to_cart(albums):
-    # needed: title of album, medium type, price, stock, quantity
+
     album_number = input("number: ")
     quantity = input("quantity: ")
     album = albums[int(album_number)-1]
@@ -54,20 +54,18 @@ def add_to_cart(albums):
         "quantityToAddToCart": quantity
     }
 
-    # response = requests.post('http://localhost:8080/musicshop-1.0/api/test1', json=album)
-    # print(response)
     response = requests.post('http://localhost:8080/musicshop-1.0/api/albums/addToCart', json=req)
-    print(response)
-    print(response.text)
 
     # add search result to cart
-    album_number = int(album_number) - 1
-    print("Album: " + albums[album_number]['title'])
-    print("Medium: " + albums[album_number]['mediumType'])
-    print("added to cart!")
     print()
+    print("Album: " + album['title'])
+    print("Medium: " + album['mediumType'])
+    print("Quantity: " + quantity)
+    print("added to cart!")
+
 
 def user_action():
+
     print()
     print("What would you like to do next?")
     print()
@@ -78,8 +76,9 @@ def user_action():
     action = input("choose action: ")
     return action
 
+
 def start_client():
-    # Greeting
+
     print()
     print("Welcome to our music shop! :)")
     chosen_action = '2'
@@ -99,6 +98,6 @@ def start_client():
             print("wrong input try again")
             chosen_action = user_action()
 
-#start Client
+
 start_client()
 
