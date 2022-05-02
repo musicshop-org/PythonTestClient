@@ -1,7 +1,7 @@
 import requests
 
 # Start
-print("\n", "Python Test Client started ...")
+print("\n", "Python Test Client started.")
 
 while True:
     print("\n", "<Music Shop Overview>")
@@ -51,20 +51,25 @@ while True:
 
             # New music search
             if command == "s":
-                continue
-
-            # Back to music shop overview or stop client
-            if command == "b" or command == "q":
-                back = True
+                print("Initiating new music search...")
 
             # Add album(s) to shopping cart
             elif command == "a":
-                print("Do something")
+                # TODO: functionality to add displayed album(s) to shopping cart
+                print("TODO: functionality to add displayed album(s) to shopping cart")
+
+            # Back to music shop overview or stop client
+            elif command == "b":
+                back = True
+                print("Back to music shop overview ...")
+
+            elif command == "q":
+                back = True
+                print("Stopping python test client ...")
 
             # Unknown command
             else:
-                # TODO: handle unknown command
-                print("Unknown command")
+                print("Unknown command. Initiating new music search ...")
 
     # Shopping Cart
     elif command == "c":
@@ -79,4 +84,4 @@ while True:
         break
 
 # End
-print("\n", "Python Test Client stopped ...")
+print("\n", "Python Test Client stopped.")
