@@ -134,41 +134,41 @@ while not end:
                         item_count += 1
                         print()
 
-                        print("Available commands: [p] Purchase line item(s), [c] Clear shopping cart, [b] Back, [q] Quit")
-                        command_valid = False
+                    print("Available commands: [p] Purchase line item(s), [c] Clear shopping cart, [b] Back, [q] Quit")
+                    command_valid = False
 
-                        while not command_valid:
-                            command = input("Enter command: ").lower()
+                    while not command_valid:
+                        command = input("Enter command: ").lower()
 
-                            # Purchase Line Item(s)
-                            if command == "p":
-                                # TODO: Purchase Line Item(s)
+                        # Purchase Line Item(s)
+                        if command == "p":
+                            # TODO: Purchase Line Item(s)
 
-                                command_valid = True
+                            command_valid = True
 
-                        # Clear Shopping Cart
-                            elif command == "c":
-                                print("Clearing shopping cart ...")
-                                response = requests.get('http://localhost:8080/musicshop-1.0/api/shoppingCart/clear')
+                    # Clear Shopping Cart
+                        elif command == "c":
+                            print("Clearing shopping cart ...")
+                            response = requests.get('http://localhost:8080/musicshop-1.0/api/shoppingCart/clear')
 
-                                command_valid = True
+                            command_valid = True
 
-                            # Back to music shop overview or stop client
-                            elif command == "b":
-                                back = True
-                                print("Back to music shop overview ...")
+                        # Back to music shop overview or stop client
+                        elif command == "b":
+                            back = True
+                            print("Back to music shop overview ...")
 
-                                command_valid = True
+                            command_valid = True
 
-                            # Quit
-                            elif command == "q":
-                                back = True
-                                command_valid = True
+                        # Quit
+                        elif command == "q":
+                            back = True
+                            command_valid = True
 
-                            else:
-                                print("Unknown command")
+                        else:
+                            print("Unknown command")
 
-                                command_valid = False
+                            command_valid = False
 
                 else:
                     print("No items in shopping cart found. Back to music shop overview ...")
