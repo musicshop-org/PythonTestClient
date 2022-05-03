@@ -40,7 +40,6 @@ while not end:
 
                 # response = requests.get('http://localhost:8080/musicshop-1.0/api/albums/' + song_title)
                 # albums = response.json()
-
                 response = rest_service.find_albums_by_song_title(song_title)
                 albums = response_to_dict(response)
 
@@ -176,8 +175,8 @@ while not end:
                     # Clear Shopping Cart
                         elif command == "c":
                             print("Clearing shopping cart ...")
-                            response = requests.get('http://localhost:8080/musicshop-1.0/api/shoppingCart/clear')
-
+                            # response = requests.get('http://localhost:8080/musicshop-1.0/api/shoppingCart/clear')
+                            rest_service.clear_shopping_cart()
                             command_valid = True
 
                         # Back to music shop overview or stop client
