@@ -3,6 +3,7 @@ import openapi_client.api.default_api as default_api
 import json
 
 from openapi_client.model.album_dto import AlbumDTO
+from openapi_client.model.user_data_dto import UserDataDTO
 
 rest_service = default_api.DefaultApi()
 
@@ -16,12 +17,33 @@ def response_to_dict(data):
     return dictionaries
 
 
+def get_user_data():
+
+    username = ""
+    password = ""
+
+    while not username:
+        username = input("Enter username: ")
+
+    while not password:
+        password = input("Enter password: ")
+
+    return UserDataDTO(username=username, password=password)
+
+
 # Start
 print("\n", "Python Test Client started.")
 end = False
+jwt_token = ""
+
+# Login
+while not jwt_token:
+    user_data = get_user_data()
+    jwt_token = rest_service.login(user_data_dto=user_data)
 
 while not end:
     print("\n", "<Music Shop Overview>")
+    print(jwt_token)
     print("Available commands: [s] Music search, [c] Display shopping cart, [q] Quit")
     command_valid = False
 
