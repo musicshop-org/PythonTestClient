@@ -76,6 +76,8 @@ while not end:
                             "quantityToAddToCart": quantity
                         }
 
+                        print("Adding ALBUM " + album_number + " to shopping cart ...")
+
                         response = requests.post('http://localhost:8080/musicshop-1.0/api/albums/addToCart', json=req)
 
                         # add search result to cart
