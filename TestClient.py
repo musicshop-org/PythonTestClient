@@ -1,4 +1,20 @@
 import requests
+import openapi_client.api.default_api as default_api
+import json
+
+from openapi_client.model.album_dto import AlbumDTO
+
+rest_service = default_api.DefaultApi()
+
+
+def response_to_dict(data):
+    dictionaries = []
+
+    for entry in data:
+        dictionaries.append(entry.to_dict())
+
+    return dictionaries
+
 
 # Start
 print("\n", "Python Test Client started.")
@@ -22,18 +38,21 @@ while not end:
 
                 print("Searching for albums containing a song with title '" + song_title.upper() + "' ...")
 
-                response = requests.get('http://localhost:8080/musicshop-1.0/api/albums/' + song_title)
-                albums = response.json()
+                # response = requests.get('http://localhost:8080/musicshop-1.0/api/albums/' + song_title)
+                # albums = response.json()
+
+                response = rest_service.find_albums_by_song_title(song_title)
+                albums = response_to_dict(response)
 
                 album_count = 1
 
                 for album in albums:
 
                     print("\n", "ALBUM " + str(album_count))
-                    print("Title:   " + album['title'])
-                    print("Medium:  " + album['mediumType'])
-                    print("Price:   " + str(album['price']) + " €")
-                    print("Stock:   " + str(album['stock']))
+                    print("Title:   " + album.get('title'))
+                    print("Medium:  " + album.get('medium_type'))
+                    print("Price:   " + str(album.get('price')) + " €")
+                    print("Stock:   " + str(album.get('stock')))
 
                     print("\n", "SONGS OF ALBUM " + str(album_count))
 
@@ -68,22 +87,30 @@ while not end:
                         quantity = input("Enter quantity: ")
                         album = albums[int(album_number) - 1]
 
-                        req = {
-                            "title": album['title'],
-                            "mediumType": album['mediumType'],
-                            "price": album['price'],
-                            "stock": album['stock'],
-                            "quantityToAddToCart": quantity
-                        }
+                        # req = {
+                        #     "title": album.get('title'),
+                        #     "mediumType": album.get('mediumType'),
+                        #     "price": album.get('price'),
+                        #     "stock": album.get('stock'),
+                        #     "quantityToAddToCart": quantity
+                        # }
+                        req = AlbumDTO(
+                            title=album.get('title'),
+                            mediumType=album.get('medium_type'),
+                            price=album.get('price'),
+                            stock=album.get('stock'),
+                            quantityToAddToCart=quantity
+                        )
 
                         print("Adding ALBUM " + album_number + " to shopping cart ...")
 
-                        response = requests.post('http://localhost:8080/musicshop-1.0/api/albums/addToCart', json=req)
+                        # response = requests.post('http://localhost:8080/musicshop-1.0/api/albums/addToCart', json=req)
+                        rest_service.add_to_cart(album_dto=req)
 
                         # add search result to cart
                         print("\n", "ALBUM " + album_number)
-                        print("Album: " + album['title'])
-                        print("Medium: " + album['mediumType'])
+                        print("Title:   " + album.get('title'))
+                        print("Medium:  " + album.get('medium_type'))
                         print("Quantity: " + quantity)
                         print("Added to cart.")
                         print("Back to music shop overview ...")
@@ -116,20 +143,20 @@ while not end:
                 print("\n", "<Shopping Cart>")
                 print("Displaying shopping cart items ...")
 
-                response = requests.get('http://localhost:8080/musicshop-1.0/api/shoppingCart/display')
-                shopping_cart = response.json()
-
-                items = shopping_cart['cartLineItems']
+                # response = requests.get('http://localhost:8080/musicshop-1.0/api/shoppingCart/display')
+                # shopping_cart = response.json()
+                response = rest_service.display_shopping_cart()
+                items = response_to_dict(response['cart_line_items'])
 
                 if items:
                     item_count = 1
 
                     for item in items:
                         print("\n", "ITEM " + str(item_count))
-                        print("Title:   " + item['name'])
-                        print("Medium:  " + item['mediumType'])
-                        print("Price:   " + str(item['price']) + " €")
-                        print("Quantity:   " + str(item['quantity']))
+                        print("Title:   " + item.get('name'))
+                        print("Medium:  " + item.get('medium_type'))
+                        print("Price:   " + str(item.get('price')) + " €")
+                        print("Quantity:   " + str(item.get('quantity')))
 
                         item_count += 1
                         print()
