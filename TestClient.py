@@ -1,6 +1,5 @@
 import requests
 
-
 # Start
 print("\n", "Python Test Client started.")
 end = False
@@ -119,53 +118,61 @@ while not end:
                 shopping_cart = response.json()
 
                 items = shopping_cart['cartLineItems']
-                item_count = 1
 
-                for item in items:
+                if items:
+                    item_count = 1
 
-                    print("\n", "ITEM " + str(item_count))
-                    print("Title:   " + item['name'])
-                    print("Medium:  " + item['mediumType'])
-                    print("Price:   " + str(item['price']) + " €")
-                    print("Quantity:   " + str(item['quantity']))
+                    for item in items:
+                        print("\n", "ITEM " + str(item_count))
+                        print("Title:   " + item['name'])
+                        print("Medium:  " + item['mediumType'])
+                        print("Price:   " + str(item['price']) + " €")
+                        print("Quantity:   " + str(item['quantity']))
 
-                    item_count += 1
-                    print()
+                        item_count += 1
+                        print()
 
-                print("Available commands: [p] Purchase line item(s), [r] Remove line item(s), [b] Back, [q] Quit")
-                command_valid = False
-
-                while not command_valid:
-                    command = input("Enter command: ").lower()
-
-                    # Purchase Line Item(s)
-                    if command == "p":
-                        print("TODO: Purchase Line Item(s)")
-                        # TODO: Purchase Line Item(s)
-
-                    # Remove Line Item(s)
-                    elif command == "r":
-                        print("TODO: Remove Line Item(s)")
-                        # TODO: Remove Line Item(s)
-
-                        command_valid = True
-
-                    # Back to music shop overview or stop client
-                    elif command == "b":
-                        back = True
-                        print("Back to music shop overview ...")
-
-                        command_valid = True
-
-                    # Quit
-                    elif command == "q":
-                        back = True
-                        command_valid = True
-
-                    else:
-                        print("Unknown command")
-
+                        print("Available commands: [p] Purchase line item(s), [c] Clear shopping cart, [b] Back, [q] Quit")
                         command_valid = False
+
+                        while not command_valid:
+                            command = input("Enter command: ").lower()
+
+                            # Purchase Line Item(s)
+                            if command == "p":
+                                # TODO: Purchase Line Item(s)
+
+                                command_valid = True
+
+                        # Clear Shopping Cart
+                            elif command == "c":
+                                print("Clearing shopping cart ...")
+                                response = requests.get('http://localhost:8080/musicshop-1.0/api/shoppingCart/clear')
+
+                                command_valid = True
+
+                            # Back to music shop overview or stop client
+                            elif command == "b":
+                                back = True
+                                print("Back to music shop overview ...")
+
+                                command_valid = True
+
+                            # Quit
+                            elif command == "q":
+                                back = True
+                                command_valid = True
+
+                            else:
+                                print("Unknown command")
+
+                                command_valid = False
+
+                else:
+                    print("No items in shopping cart found. Back to music shop overview ...")
+
+                    back = True
+                    command_valid = True
 
         # Unknown command
         else:
