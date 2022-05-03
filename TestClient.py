@@ -1,103 +1,114 @@
 import requests
 
 
-def music_search():
+# Start
+print("\n", "Python Test Client started.")
 
-    print()
-    print("Enter a song title of an album you are interested in")
-    song_title = input("song title: ")
+while True:
+    print("\n", "<Music Shop Overview>")
+    print("Available commands: [s] Music search, [c] Display shopping cart, [q] Quit")
 
-    response = requests.get('http://localhost:8080/musicshop-1.0/api/albums/' + song_title)
-    albums = response.json()
+    command = input("Enter command: ").lower()
 
-    album_count = 1
+    # Music Search
+    if command == "s":
+        back = False
+        while not back:
+            print("\n", "<Music Search>")
 
-    for album in albums:
+            song_title = input("Enter song title: ")
 
-        print()
-        print("ALBUM " + str(album_count))
-        print("Title:   " + album['title'])
-        print("Medium:  " + album['mediumType'])
-        print("Price:   " + str(album['price']) + " €")
-        print("Stock:   " + str(album['stock']))
+            print("Searching for albums containing a song with title '" + song_title.upper() + "' ...")
 
-        print()
-        print("SONGS OF ALBUM " + str(album_count))
+            response = requests.get('http://localhost:8080/musicshop-1.0/api/albums/' + song_title)
+            albums = response.json()
 
-        song_count = 1
+            album_count = 1
 
-        for song in album['songs']:
-            print('#' + str(song_count) + ' ' + song['title'])
+            for album in albums:
 
-            for artist in song['artists']:
-                print(artist['name'])
+                print("\n", "ALBUM " + str(album_count))
+                print("Title:   " + album['title'])
+                print("Medium:  " + album['mediumType'])
+                print("Price:   " + str(album['price']) + " €")
+                print("Stock:   " + str(album['stock']))
 
-            song_count += 1
+                print("\n", "SONGS OF ALBUM " + str(album_count))
 
-        album_count += 1
-        print()
+                song_count = 1
 
-    return albums
+                for song in album['songs']:
+                    print('#' + str(song_count) + ' ' + song['title'])
 
+                    for artist in song['artists']:
+                        print(artist['name'])
 
-def add_to_cart(albums):
+                    song_count += 1
 
-    album_number = input("number: ")
-    quantity = input("quantity: ")
-    album = albums[int(album_number)-1]
+                album_count += 1
+                print()
 
-    req = {
-        "title": album['title'],
-        "mediumType": album['mediumType'],
-        "price": album['price'],
-        "stock": album['stock'],
-        "quantityToAddToCart": quantity
-    }
+            print("Available commands: [a] Add album(s) to shopping cart, [s] New music search, [b] Back, [q] Quit")
+            command = input("Enter command: ").lower()
 
-    response = requests.post('http://localhost:8080/musicshop-1.0/api/albums/addToCart', json=req)
+            # New music search
+            if command == "s":
+                print("Initiating new music search...")
 
-    # add search result to cart
-    print()
-    print("Album: " + album['title'])
-    print("Medium: " + album['mediumType'])
-    print("Quantity: " + quantity)
-    print("added to cart!")
+            # Add album(s) to shopping cart
+            elif command == "a":
+                album_number = input("Enter album number: ")
+                quantity = input("Enter quantity: ")
+                album = albums[int(album_number) - 1]
 
+                req = {
+                    "title": album['title'],
+                    "mediumType": album['mediumType'],
+                    "price": album['price'],
+                    "stock": album['stock'],
+                    "quantityToAddToCart": quantity
+                }
 
-def user_action():
+                response = requests.post('http://localhost:8080/musicshop-1.0/api/albums/addToCart', json=req)
 
-    print()
-    print("What would you like to do next?")
-    print()
-    print("1 -> add searched album/s to cart")
-    print("2 -> search for another album")
-    print("3 -> quit")
-    print()
-    action = input("choose action: ")
-    return action
+                # add search result to cart
+                print("\n", "ALBUM " + album_number)
+                print("Album: " + album['title'])
+                print("Medium: " + album['mediumType'])
+                print("Quantity: " + quantity)
+                print("Added to cart.")
 
+                back = True
 
-def start_client():
+            # Back to music shop overview or stop client
+            elif command == "b":
+                back = True
+                print("Back to music shop overview ...")
 
-    print()
-    print("Welcome to our music shop! :)")
-    chosen_action = '2'
-    quit = 1
+            elif command == "q":
+                back = True
+                print("Stopping python test client ...")
 
-    while quit > 0:
-        if chosen_action == '1':
-            add_to_cart(albums)
-            chosen_action = user_action()
-        elif chosen_action == '2':
-            albums = music_search()
-            chosen_action = user_action()
-        elif chosen_action == '3':
-            quit = 0
-        else:
-            print()
-            print("wrong input try again")
-            chosen_action = user_action()
+            # Unknown command
+            else:
+                print("Unknown command. Initiating new music search ...")
 
+    # Shopping Cart
+    elif command == "c":
+        print("\n", "<Shopping Cart>")
 
-start_client()
+        response = requests.get('http://localhost:8080/musicshop-1.0/api/shoppingCart/display')
+        shopping_cart = response.json()
 
+        print(shopping_cart)
+
+    # Unknown command
+    else:
+        print("Unknown command")
+
+    # Quit
+    if command == "q":
+        break
+
+# End
+print("\n", "Python Test Client stopped.")
