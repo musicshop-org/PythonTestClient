@@ -3,112 +3,182 @@ import requests
 
 # Start
 print("\n", "Python Test Client started.")
+end = False
 
-while True:
+while not end:
     print("\n", "<Music Shop Overview>")
     print("Available commands: [s] Music search, [c] Display shopping cart, [q] Quit")
+    command_valid = False
 
-    command = input("Enter command: ").lower()
+    while not command_valid:
+        command = input("Enter command: ").lower()
 
-    # Music Search
-    if command == "s":
-        back = False
-        while not back:
-            print("\n", "<Music Search>")
+        # Music Search
+        if command == "s":
+            back = False
+            while not back:
+                print("\n", "<Music Search>")
 
-            song_title = input("Enter song title: ")
+                song_title = input("Enter song title: ")
 
-            print("Searching for albums containing a song with title '" + song_title.upper() + "' ...")
+                print("Searching for albums containing a song with title '" + song_title.upper() + "' ...")
 
-            response = requests.get('http://localhost:8080/musicshop-1.0/api/albums/' + song_title)
-            albums = response.json()
+                response = requests.get('http://localhost:8080/musicshop-1.0/api/albums/' + song_title)
+                albums = response.json()
 
-            album_count = 1
+                album_count = 1
 
-            for album in albums:
+                for album in albums:
 
-                print("\n", "ALBUM " + str(album_count))
-                print("Title:   " + album['title'])
-                print("Medium:  " + album['mediumType'])
-                print("Price:   " + str(album['price']) + " €")
-                print("Stock:   " + str(album['stock']))
+                    print("\n", "ALBUM " + str(album_count))
+                    print("Title:   " + album['title'])
+                    print("Medium:  " + album['mediumType'])
+                    print("Price:   " + str(album['price']) + " €")
+                    print("Stock:   " + str(album['stock']))
 
-                print("\n", "SONGS OF ALBUM " + str(album_count))
+                    print("\n", "SONGS OF ALBUM " + str(album_count))
 
-                song_count = 1
+                    song_count = 1
 
-                for song in album['songs']:
-                    print('#' + str(song_count) + ' ' + song['title'])
+                    for song in album['songs']:
+                        print('#' + str(song_count) + ' ' + song['title'])
 
-                    for artist in song['artists']:
-                        print(artist['name'])
+                        for artist in song['artists']:
+                            print(artist['name'])
 
-                    song_count += 1
+                        song_count += 1
 
-                album_count += 1
-                print()
+                    album_count += 1
+                    print()
 
-            print("Available commands: [a] Add album(s) to shopping cart, [s] New music search, [b] Back, [q] Quit")
-            command = input("Enter command: ").lower()
+                print("Available commands: [a] Add album(s) to shopping cart, [s] New music search, [b] Back, [q] Quit")
+                command_valid = False
 
-            # New music search
-            if command == "s":
-                print("Initiating new music search...")
+                while not command_valid:
+                    command = input("Enter command: ").lower()
 
-            # Add album(s) to shopping cart
-            elif command == "a":
-                album_number = input("Enter album number: ")
-                quantity = input("Enter quantity: ")
-                album = albums[int(album_number) - 1]
+                    # New music search
+                    if command == "s":
+                        print("Initiating new music search...")
 
-                req = {
-                    "title": album['title'],
-                    "mediumType": album['mediumType'],
-                    "price": album['price'],
-                    "stock": album['stock'],
-                    "quantityToAddToCart": quantity
-                }
+                        command_valid = True
 
-                response = requests.post('http://localhost:8080/musicshop-1.0/api/albums/addToCart', json=req)
+                    # Add album(s) to shopping cart
+                    elif command == "a":
+                        album_number = input("Enter album number: ")
+                        quantity = input("Enter quantity: ")
+                        album = albums[int(album_number) - 1]
 
-                # add search result to cart
-                print("\n", "ALBUM " + album_number)
-                print("Album: " + album['title'])
-                print("Medium: " + album['mediumType'])
-                print("Quantity: " + quantity)
-                print("Added to cart.")
+                        req = {
+                            "title": album['title'],
+                            "mediumType": album['mediumType'],
+                            "price": album['price'],
+                            "stock": album['stock'],
+                            "quantityToAddToCart": quantity
+                        }
 
-                back = True
+                        response = requests.post('http://localhost:8080/musicshop-1.0/api/albums/addToCart', json=req)
 
-            # Back to music shop overview or stop client
-            elif command == "b":
-                back = True
-                print("Back to music shop overview ...")
+                        # add search result to cart
+                        print("\n", "ALBUM " + album_number)
+                        print("Album: " + album['title'])
+                        print("Medium: " + album['mediumType'])
+                        print("Quantity: " + quantity)
+                        print("Added to cart.")
+                        print("Back to music shop overview ...")
 
-            elif command == "q":
-                back = True
-                print("Stopping python test client ...")
+                        back = True
+                        command_valid = True
 
-            # Unknown command
-            else:
-                print("Unknown command. Initiating new music search ...")
+                    # Back to music shop overview or stop client
+                    elif command == "b":
+                        print("Back to music shop overview ...")
 
-    # Shopping Cart
-    elif command == "c":
-        print("\n", "<Shopping Cart>")
+                        back = True
+                        command_valid = True
 
-        response = requests.get('http://localhost:8080/musicshop-1.0/api/shoppingCart/display')
-        shopping_cart = response.json()
+                    # Quit
+                    elif command == "q":
+                        back = True
+                        command_valid = True
 
-        print(shopping_cart)
+                    # Unknown command
+                    else:
+                        print("Unknown command")
 
-    # Unknown command
-    else:
-        print("Unknown command")
+                        command_valid = False
 
-    # Quit
-    if command == "q":
-        break
+        # Shopping Cart
+        elif command == "c":
+            back = False
+            while not back:
+                print("\n", "<Shopping Cart>")
+                print("Displaying shopping cart items ...")
+
+                response = requests.get('http://localhost:8080/musicshop-1.0/api/shoppingCart/display')
+                shopping_cart = response.json()
+
+                items = shopping_cart['cartLineItems']
+                item_count = 1
+
+                for item in items:
+
+                    print("\n", "ITEM " + str(item_count))
+                    print("Title:   " + item['name'])
+                    print("Medium:  " + item['mediumType'])
+                    print("Price:   " + str(item['price']) + " €")
+                    print("Quantity:   " + str(item['quantity']))
+
+                    item_count += 1
+                    print()
+
+                print("Available commands: [p] Purchase line item(s), [r] Remove line item(s), [b] Back, [q] Quit")
+                command_valid = False
+
+                while not command_valid:
+                    command = input("Enter command: ").lower()
+
+                    # Purchase Line Item(s)
+                    if command == "p":
+                        print("TODO: Purchase Line Item(s)")
+                        # TODO: Purchase Line Item(s)
+
+                    # Remove Line Item(s)
+                    elif command == "r":
+                        print("TODO: Remove Line Item(s)")
+                        # TODO: Remove Line Item(s)
+
+                        command_valid = True
+
+                    # Back to music shop overview or stop client
+                    elif command == "b":
+                        back = True
+                        print("Back to music shop overview ...")
+
+                        command_valid = True
+
+                    # Quit
+                    elif command == "q":
+                        back = True
+                        command_valid = True
+
+                    else:
+                        print("Unknown command")
+
+                        command_valid = False
+
+        # Unknown command
+        else:
+            print("Unknown command")
+
+            command_valid = False
+
+        # Quit
+        if command == "q":
+            print("Stopping python test client ...")
+
+            end = True
+            command_valid = True
 
 # End
 print("\n", "Python Test Client stopped.")
