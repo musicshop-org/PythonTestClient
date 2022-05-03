@@ -50,7 +50,7 @@ while not end:
                     album_count += 1
                     print()
 
-                print("Available commands: [a] Add album(s) to shopping cart, [s] New music search, [b] Back, [q] Quit")
+                print("Available commands: [a] Add album to shopping cart, [s] New music search, [b] Back, [q] Quit")
                 command_valid = False
 
                 while not command_valid:
