@@ -139,23 +139,22 @@ while not end:
 
                     while not command_valid:
                         command = input("Enter command: ").lower()
-
                         # Purchase Line Item(s)
                         if command == "p":
-
+#TODO: man muss in req alle items reinspeichern und nicht nur eines. Problem req ist datentyp dict
                             for item in items:
-                                req += {
+                                req = {
                                     "name": item['name'],
                                     "mediumType": item['mediumType'],
                                     "price": item['price'],
                                     "quantity": item['quantity']
                                 }
 
-                            req = '{'+req+'}'
                             response = requests.post('http://localhost:8080/musicshop-1.0/api/albums/buyProducts', json=req)
-                            # TODO: Purchase Line Item(s)
 
                             command_valid = True
+
+                            print("Purchase the Items")
 
                     # Clear Shopping Cart
                         elif command == "c":
