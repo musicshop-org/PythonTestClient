@@ -142,6 +142,17 @@ while not end:
 
                         # Purchase Line Item(s)
                         if command == "p":
+
+                            for item in items:
+                                req += {
+                                    "name": item['name'],
+                                    "mediumType": item['mediumType'],
+                                    "price": item['price'],
+                                    "quantity": item['quantity']
+                                }
+
+                            req = '{'+req+'}'
+                            response = requests.post('http://localhost:8080/musicshop-1.0/api/albums/buyProducts', json=req)
                             # TODO: Purchase Line Item(s)
 
                             command_valid = True
