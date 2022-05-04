@@ -1,11 +1,8 @@
-import requests
-import openapi_client.api.default_api as default_api
-import json
+from openapi_client.api import default_api
+from openapi_client import api_client
 
 from openapi_client.model.album_dto import AlbumDTO
 from openapi_client.model.user_data_dto import UserDataDTO
-
-rest_service = default_api.DefaultApi()
 
 
 def response_to_dict(data):
@@ -18,28 +15,38 @@ def response_to_dict(data):
 
 
 def get_user_data():
-
-    username = ""
+    email_address = ""
     password = ""
 
-    while not username:
-        username = input("Enter username: ")
+    while not email_address:
+        email_address = input("Enter email: ")
 
     while not password:
         password = input("Enter password: ")
 
-    return UserDataDTO(username=username, password=password)
+    return UserDataDTO(emailAddress=email_address, password=password)
+
+
+def get_authorized_rest_service(token):
+    client = api_client.ApiClient()
+    client.set_default_header("Authorization", token)
+
+    return default_api.DefaultApi(client)
 
 
 # Start
 print("\n", "Python Test Client started.")
 end = False
 jwt_token = ""
+unauthorized_rest_service = default_api.DefaultApi()
 
 # Login
 while not jwt_token:
     user_data = get_user_data()
-    jwt_token = rest_service.login(user_data_dto=user_data)
+    jwt_token = unauthorized_rest_service.login(user_data_dto=user_data)
+
+# create authorized_rest_service (with Jwt-Token in Headers)
+authorized_rest_service = get_authorized_rest_service(jwt_token)
 
 while not end:
     print("\n", "<Music Shop Overview>")
@@ -62,7 +69,7 @@ while not end:
 
                 # response = requests.get('http://localhost:8080/musicshop-1.0/api/albums/' + song_title)
                 # albums = response.json()
-                response = rest_service.find_albums_by_song_title(song_title)
+                response = authorized_rest_service.find_albums_by_song_title(song_title)
                 albums = response_to_dict(response)
 
                 album_count = 1
@@ -126,7 +133,7 @@ while not end:
                         print("Adding ALBUM " + album_number + " to shopping cart ...")
 
                         # response = requests.post('http://localhost:8080/musicshop-1.0/api/albums/addToCart', json=req)
-                        rest_service.add_to_cart(album_dto=req)
+                        authorized_rest_service.add_to_cart(album_dto=req)
 
                         # add search result to cart
                         print("\n", "ALBUM " + album_number)
@@ -166,7 +173,7 @@ while not end:
 
                 # response = requests.get('http://localhost:8080/musicshop-1.0/api/shoppingCart/display')
                 # shopping_cart = response.json()
-                response = rest_service.display_shopping_cart()
+                response = authorized_rest_service.display_shopping_cart()
                 items = response_to_dict(response['cart_line_items'])
 
                 if items:
@@ -198,7 +205,7 @@ while not end:
                         elif command == "c":
                             print("Clearing shopping cart ...")
                             # response = requests.get('http://localhost:8080/musicshop-1.0/api/shoppingCart/clear')
-                            rest_service.clear_shopping_cart()
+                            authorized_rest_service.clear_shopping_cart()
                             command_valid = True
 
                         # Back to music shop overview or stop client
