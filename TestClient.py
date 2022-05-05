@@ -19,10 +19,10 @@ def get_user_data():
     password = ""
 
     while not email_address:
-        email_address = input("Enter email: ")
+        email_address = input("email: ")
 
     while not password:
-        password = input("Enter password: ")
+        password = input("password: ")
 
     return UserDataDTO(emailAddress=email_address, password=password)
 
@@ -35,7 +35,8 @@ def get_authorized_rest_service(token):
 
 
 # Start
-print("\n", "Python Test Client started.")
+print()
+print("Enter your credentials")
 end = False
 jwt_token = ""
 unauthorized_rest_service = default_api.DefaultApi()
@@ -45,12 +46,15 @@ while not jwt_token:
     user_data = get_user_data()
     jwt_token = unauthorized_rest_service.login(user_data_dto=user_data)
 
-# create authorized_rest_service (with Jwt-Token in Headers)
+# On successful login -> create authorized_rest_service (with Jwt-Token in Headers)
 authorized_rest_service = get_authorized_rest_service(jwt_token)
 
+print()
+print("Welcome to our music shop :)")
+
 while not end:
-    print("\n", "<Music Shop Overview>")
-    print(jwt_token)
+    print()
+    print("<Music Overview>")
     print("Available commands: [s] Music search, [c] Display shopping cart, [q] Quit")
     command_valid = False
 
@@ -61,14 +65,13 @@ while not end:
         if command == "s":
             back = False
             while not back:
-                print("\n", "<Music Search>")
+                print()
+                print("<Music Search>")
 
                 song_title = input("Enter song title: ")
 
                 print("Searching for albums containing a song with title '" + song_title.upper() + "' ...")
 
-                # response = requests.get('http://localhost:8080/musicshop-1.0/api/albums/' + song_title)
-                # albums = response.json()
                 response = authorized_rest_service.find_albums_by_song_title(song_title)
                 albums = response_to_dict(response)
 
@@ -76,13 +79,15 @@ while not end:
 
                 for album in albums:
 
-                    print("\n", "ALBUM " + str(album_count))
+                    print()
+                    print("ALBUM " + str(album_count))
                     print("Title:   " + album.get('title'))
                     print("Medium:  " + album.get('medium_type'))
                     print("Price:   " + str(album.get('price')) + " €")
                     print("Stock:   " + str(album.get('stock')))
 
-                    print("\n", "SONGS OF ALBUM " + str(album_count))
+                    print()
+                    print("SONGS OF ALBUM " + str(album_count))
 
                     song_count = 1
 
@@ -115,13 +120,6 @@ while not end:
                         quantity = input("Enter quantity: ")
                         album = albums[int(album_number) - 1]
 
-                        # req = {
-                        #     "title": album.get('title'),
-                        #     "mediumType": album.get('mediumType'),
-                        #     "price": album.get('price'),
-                        #     "stock": album.get('stock'),
-                        #     "quantityToAddToCart": quantity
-                        # }
                         req = AlbumDTO(
                             title=album.get('title'),
                             mediumType=album.get('medium_type'),
@@ -132,11 +130,11 @@ while not end:
 
                         print("Adding ALBUM " + album_number + " to shopping cart ...")
 
-                        # response = requests.post('http://localhost:8080/musicshop-1.0/api/albums/addToCart', json=req)
                         authorized_rest_service.add_to_cart(album_dto=req)
 
                         # add search result to cart
-                        print("\n", "ALBUM " + album_number)
+                        print()
+                        print("ALBUM " + album_number)
                         print("Title:   " + album.get('title'))
                         print("Medium:  " + album.get('medium_type'))
                         print("Quantity: " + quantity)
@@ -168,11 +166,10 @@ while not end:
         elif command == "c":
             back = False
             while not back:
-                print("\n", "<Shopping Cart>")
+                print()
+                print("<Shopping Cart>")
                 print("Displaying shopping cart items ...")
 
-                # response = requests.get('http://localhost:8080/musicshop-1.0/api/shoppingCart/display')
-                # shopping_cart = response.json()
                 response = authorized_rest_service.display_shopping_cart()
                 items = response_to_dict(response['cart_line_items'])
 
@@ -180,15 +177,16 @@ while not end:
                     item_count = 1
 
                     for item in items:
-                        print("\n", "ITEM " + str(item_count))
+                        print()
+                        print("ITEM " + str(item_count))
                         print("Title:   " + item.get('name'))
                         print("Medium:  " + item.get('medium_type'))
                         print("Price:   " + str(item.get('price')) + " €")
                         print("Quantity:   " + str(item.get('quantity')))
 
                         item_count += 1
-                        print()
 
+                    print()
                     print("Available commands: [p] Purchase line item(s), [c] Clear shopping cart, [b] Back, [q] Quit")
                     command_valid = False
 
@@ -201,10 +199,9 @@ while not end:
 
                             command_valid = True
 
-                    # Clear Shopping Cart
+                        # Clear Shopping Cart
                         elif command == "c":
                             print("Clearing shopping cart ...")
-                            # response = requests.get('http://localhost:8080/musicshop-1.0/api/shoppingCart/clear')
                             authorized_rest_service.clear_shopping_cart()
                             command_valid = True
 
@@ -245,4 +242,5 @@ while not end:
             command_valid = True
 
 # End
-print("\n", "Python Test Client stopped.")
+print()
+print("Bye! Have a nice day :)")
