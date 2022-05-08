@@ -195,7 +195,7 @@ while not end:
 
                         # Purchase Line Item(s)
                         if command == "p":
-#TODO: man muss in req alle items reinspeichern und nicht nur eines. Problem req ist datentyp dict
+                            # TODO: man muss in req alle items reinspeichern und nicht nur eines. Problem req ist datentyp dict
                             for item in items:
                                 req = {
                                     "name": item['name'],
