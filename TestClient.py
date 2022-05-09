@@ -2,6 +2,7 @@ from openapi_client.api import default_api
 from openapi_client import api_client
 
 from openapi_client.model.album_dto import AlbumDTO
+from openapi_client.model.invoice_line_item_dto import InvoiceLineItemDTO
 from openapi_client.model.user_data_dto import UserDataDTO
 
 
@@ -187,7 +188,7 @@ while not end:
                         item_count += 1
 
                     print()
-                    print("Available commands: [p] Purchase line item(s), [c] Clear shopping cart, [b] Back, [q] Quit")
+                    print("Available commands: [p] Purchase line items, [c] Clear shopping cart, [b] Back, [q] Quit")
                     command_valid = False
 
                     while not command_valid:
@@ -195,22 +196,28 @@ while not end:
 
                         # Purchase Line Item(s)
                         if command == "p":
-                            # TODO: man muss in req alle items reinspeichern und nicht nur eines. Problem req ist datentyp dict
-                            for item in items:
-                                req = {
-                                    "name": item['name'],
-                                    "mediumType": item['mediumType'],
-                                    "price": item['price'],
-                                    "quantity": item['quantity']
-                                }
+                            print("Purchasing items ...")
+                            invoice_line_items = []
 
-                            response = requests.post('http://localhost:8080/musicshop-1.0/api/albums/buyProducts', json=req)
+                            for item in items:
+
+                                invoice_line_item = InvoiceLineItemDTO(
+                                    name=item.get('name'),
+                                    mediumType=item.get('medium_type'),
+                                    quantity=item.get('quantity'),
+                                    price=item.get('price'),
+                                    returnedQuantity=0
+                                )
+
+                                invoice_line_items.append(invoice_line_item)
+
+                            authorized_rest_service.buy_product(invoice_line_item_dto=invoice_line_items)
+                            authorized_rest_service.clear_shopping_cart()
+                            print("Items purchased and shopping cart cleared.")
 
                             command_valid = True
 
-                            print("Purchase the Items")
-
-                    # Clear Shopping Cart
+                        # Clear Shopping Cart
                         elif command == "c":
                             print("Clearing shopping cart ...")
                             authorized_rest_service.clear_shopping_cart()
