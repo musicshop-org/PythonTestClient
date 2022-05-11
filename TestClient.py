@@ -2,6 +2,7 @@ from openapi_client.api import default_api
 from openapi_client import api_client
 
 from openapi_client.model.album_dto import AlbumDTO
+from openapi_client.model.invoice_line_item_dto import InvoiceLineItemDTO
 from openapi_client.model.user_data_dto import UserDataDTO
 
 
@@ -38,16 +39,16 @@ def get_authorized_rest_service(token):
 print()
 print("Enter your credentials")
 end = False
-jwt_token = ""
+jwt = ""
 unauthorized_rest_service = default_api.DefaultApi()
 
 # Login
-while not jwt_token:
+while not jwt:
     user_data = get_user_data()
-    jwt_token = unauthorized_rest_service.login(user_data_dto=user_data)
+    jwt = unauthorized_rest_service.login(user_data_dto=user_data)
 
-# On successful login -> create authorized_rest_service (with Jwt-Token in Headers)
-authorized_rest_service = get_authorized_rest_service(jwt_token)
+# On successful login -> create authorized_rest_service (with jwt in Headers)
+authorized_rest_service = get_authorized_rest_service(jwt)
 
 print()
 print("Welcome to our music shop :)")
@@ -187,7 +188,7 @@ while not end:
                         item_count += 1
 
                     print()
-                    print("Available commands: [p] Purchase line item(s), [c] Clear shopping cart, [b] Back, [q] Quit")
+                    print("Available commands: [p] Purchase line items, [c] Clear shopping cart, [b] Back, [q] Quit")
                     command_valid = False
 
                     while not command_valid:
@@ -195,7 +196,24 @@ while not end:
 
                         # Purchase Line Item(s)
                         if command == "p":
-                            # TODO: Purchase Line Item(s)
+                            print("Purchasing items ...")
+                            invoice_line_items = []
+
+                            for item in items:
+
+                                invoice_line_item = InvoiceLineItemDTO(
+                                    name=item.get('name'),
+                                    mediumType=item.get('medium_type'),
+                                    quantity=item.get('quantity'),
+                                    price=item.get('price'),
+                                    returnedQuantity=0
+                                )
+
+                                invoice_line_items.append(invoice_line_item)
+
+                            authorized_rest_service.buy_product(invoice_line_item_dto=invoice_line_items)
+                            authorized_rest_service.clear_shopping_cart()
+                            print("Items purchased and shopping cart cleared.")
 
                             command_valid = True
 
