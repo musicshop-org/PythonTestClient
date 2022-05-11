@@ -39,16 +39,16 @@ def get_authorized_rest_service(token):
 print()
 print("Enter your credentials")
 end = False
-jwt_token = ""
+jwt = ""
 unauthorized_rest_service = default_api.DefaultApi()
 
 # Login
-while not jwt_token:
+while not jwt:
     user_data = get_user_data()
-    jwt_token = unauthorized_rest_service.login(user_data_dto=user_data)
+    jwt = unauthorized_rest_service.login(user_data_dto=user_data)
 
-# On successful login -> create authorized_rest_service (with Jwt-Token in Headers)
-authorized_rest_service = get_authorized_rest_service(jwt_token)
+# On successful login -> create authorized_rest_service (with jwt in Headers)
+authorized_rest_service = get_authorized_rest_service(jwt)
 
 print()
 print("Welcome to our music shop :)")
