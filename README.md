@@ -52,6 +52,7 @@ from openapi_client.api import default_api
 from openapi_client.model.album_dto import AlbumDTO
 from openapi_client.model.invoice_line_item_dto import InvoiceLineItemDTO
 from openapi_client.model.shopping_cart_dto import ShoppingCartDTO
+from openapi_client.model.song_dto import SongDTO
 from openapi_client.model.user_data_dto import UserDataDTO
 # Defining the host is optional and defaults to http://localhost
 # See configuration.py for a list of all supported configuration parameters.
@@ -65,9 +66,10 @@ configuration = openapi_client.Configuration(
 with openapi_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = default_api.DefaultApi(api_client)
-    authorization = "Authorization_example" # str |  (optional)
+    cart_uuid = "CartUUID_example" # str |  (optional)
 album_dto = AlbumDTO(
         title="title_example",
+        image_url="image_url_example",
         price=3.14,
         stock=1,
         medium_type="CD",
@@ -78,6 +80,7 @@ album_dto = AlbumDTO(
         label="label_example",
         songs=[
             SongDTO(
+                song_id=1,
                 title="title_example",
                 price=3.14,
                 stock=1,
@@ -98,10 +101,10 @@ album_dto = AlbumDTO(
     ) # AlbumDTO |  (optional)
 
     try:
-        api_response = api_instance.add_to_cart(authorization=authorization, album_dto=album_dto)
+        api_response = api_instance.add_albums_to_cart(cart_uuid=cart_uuid, album_dto=album_dto)
         pprint(api_response)
     except openapi_client.ApiException as e:
-        print("Exception when calling DefaultApi->add_to_cart: %s\n" % e)
+        print("Exception when calling DefaultApi->add_albums_to_cart: %s\n" % e)
 ```
 
 ## Documentation for API Endpoints
@@ -110,11 +113,14 @@ All URIs are relative to *http://localhost*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-*DefaultApi* | [**add_to_cart**](docs/DefaultApi.md#add_to_cart) | **POST** /api/albums/addToCart | 
+*DefaultApi* | [**add_albums_to_cart**](docs/DefaultApi.md#add_albums_to_cart) | **POST** /api/albums/addAlbumsToCart | 
+*DefaultApi* | [**add_songs_from_album_to_cart**](docs/DefaultApi.md#add_songs_from_album_to_cart) | **POST** /api/albums/addSongsFromAlbumToCart | 
+*DefaultApi* | [**add_songs_to_cart**](docs/DefaultApi.md#add_songs_to_cart) | **POST** /api/albums/addSongsToCart | 
 *DefaultApi* | [**buy_product**](docs/DefaultApi.md#buy_product) | **POST** /api/shoppingCart/buyProducts | 
 *DefaultApi* | [**clear_shopping_cart**](docs/DefaultApi.md#clear_shopping_cart) | **GET** /api/shoppingCart/clear | 
 *DefaultApi* | [**display_shopping_cart**](docs/DefaultApi.md#display_shopping_cart) | **GET** /api/shoppingCart/display | 
-*DefaultApi* | [**find_albums_by_song_title**](docs/DefaultApi.md#find_albums_by_song_title) | **GET** /api/albums/{songTitle} | 
+*DefaultApi* | [**find_album_by_album_id**](docs/DefaultApi.md#find_album_by_album_id) | **GET** /api/album/{albumId} | 
+*DefaultApi* | [**find_albums_by_song_title_physical**](docs/DefaultApi.md#find_albums_by_song_title_physical) | **GET** /api/albums/{songTitle} | 
 *DefaultApi* | [**login**](docs/DefaultApi.md#login) | **POST** /api/login | 
 *DefaultApi* | [**login_web**](docs/DefaultApi.md#login_web) | **POST** /api/loginWeb | 
 *DefaultApi* | [**welcome**](docs/DefaultApi.md#welcome) | **GET** /api | 

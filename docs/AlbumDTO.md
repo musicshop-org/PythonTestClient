@@ -5,6 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **title** | **str** |  | [optional] 
+**image_url** | **str** |  | [optional] 
 **price** | **float** |  | [optional] 
 **stock** | **int** |  | [optional] 
 **medium_type** | **str** |  | [optional] 

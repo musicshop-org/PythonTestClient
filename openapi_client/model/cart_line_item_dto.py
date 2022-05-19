@@ -57,9 +57,15 @@ class CartLineItemDTO(ModelNormal):
             'DIGITAL': "DIGITAL",
             'VINYL': "VINYL",
         },
+        ('product_type',): {
+            'SONG': "SONG",
+            'ALBUM': "ALBUM",
+        },
     }
 
     validations = {
+        ('artists',): {
+        },
     }
 
     @cached_property
@@ -88,6 +94,9 @@ class CartLineItemDTO(ModelNormal):
             'quantity': (int,),  # noqa: E501
             'price': (float,),  # noqa: E501
             'stock': (int,),  # noqa: E501
+            'image_url': (str,),  # noqa: E501
+            'product_type': (str,),  # noqa: E501
+            'artists': ([str],),  # noqa: E501
         }
 
     @cached_property
@@ -101,6 +110,9 @@ class CartLineItemDTO(ModelNormal):
         'quantity': 'quantity',  # noqa: E501
         'price': 'price',  # noqa: E501
         'stock': 'stock',  # noqa: E501
+        'image_url': 'imageUrl',  # noqa: E501
+        'product_type': 'productType',  # noqa: E501
+        'artists': 'artists',  # noqa: E501
     }
 
     read_only_vars = {
@@ -149,6 +161,9 @@ class CartLineItemDTO(ModelNormal):
             quantity (int): [optional]  # noqa: E501
             price (float): [optional]  # noqa: E501
             stock (int): [optional]  # noqa: E501
+            image_url (str): [optional]  # noqa: E501
+            product_type (str): [optional]  # noqa: E501
+            artists ([str]): [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
@@ -235,6 +250,9 @@ class CartLineItemDTO(ModelNormal):
             quantity (int): [optional]  # noqa: E501
             price (float): [optional]  # noqa: E501
             stock (int): [optional]  # noqa: E501
+            image_url (str): [optional]  # noqa: E501
+            product_type (str): [optional]  # noqa: E501
+            artists ([str]): [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)

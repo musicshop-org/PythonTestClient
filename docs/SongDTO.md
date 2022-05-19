@@ -4,6 +4,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**song_id** | **int** |  | [optional] 
 **title** | **str** |  | [optional] 
 **price** | **float** |  | [optional] 
 **stock** | **int** |  | [optional] 
