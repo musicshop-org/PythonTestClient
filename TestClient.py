@@ -7,6 +7,7 @@ from openapi_client.model.user_data_dto import UserDataDTO
 
 import uuid
 
+
 def response_to_dict(data):
     dictionaries = []
 
