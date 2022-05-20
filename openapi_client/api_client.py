@@ -771,10 +771,10 @@ class Endpoint(object):
         Example:
 
         api_instance = DefaultApi()
-        api_instance.add_to_cart  # this is an instance of the class Endpoint
-        api_instance.add_to_cart()  # this invokes api_instance.add_to_cart.__call__()
+        api_instance.add_albums_to_cart  # this is an instance of the class Endpoint
+        api_instance.add_albums_to_cart()  # this invokes api_instance.add_albums_to_cart.__call__()
         which then invokes the callable functions stored in that endpoint at
-        api_instance.add_to_cart.callable or self.callable in this class
+        api_instance.add_albums_to_cart.callable or self.callable in this class
 
         """
         return self.callable(self, *args, **kwargs)

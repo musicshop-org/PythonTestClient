@@ -94,6 +94,7 @@ class AlbumDTO(ModelNormal):
         lazy_import()
         return {
             'title': (str,),  # noqa: E501
+            'image_url': (str,),  # noqa: E501
             'price': (float,),  # noqa: E501
             'stock': (int,),  # noqa: E501
             'medium_type': (str,),  # noqa: E501
@@ -111,6 +112,7 @@ class AlbumDTO(ModelNormal):
 
     attribute_map = {
         'title': 'title',  # noqa: E501
+        'image_url': 'imageUrl',  # noqa: E501
         'price': 'price',  # noqa: E501
         'stock': 'stock',  # noqa: E501
         'medium_type': 'mediumType',  # noqa: E501
@@ -163,6 +165,7 @@ class AlbumDTO(ModelNormal):
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
             title (str): [optional]  # noqa: E501
+            image_url (str): [optional]  # noqa: E501
             price (float): [optional]  # noqa: E501
             stock (int): [optional]  # noqa: E501
             medium_type (str): [optional]  # noqa: E501
@@ -253,6 +256,7 @@ class AlbumDTO(ModelNormal):
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
             title (str): [optional]  # noqa: E501
+            image_url (str): [optional]  # noqa: E501
             price (float): [optional]  # noqa: E501
             stock (int): [optional]  # noqa: E501
             medium_type (str): [optional]  # noqa: E501

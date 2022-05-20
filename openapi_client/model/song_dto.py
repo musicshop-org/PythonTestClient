@@ -93,6 +93,7 @@ class SongDTO(ModelNormal):
         """
         lazy_import()
         return {
+            'song_id': (int,),  # noqa: E501
             'title': (str,),  # noqa: E501
             'price': (float,),  # noqa: E501
             'stock': (int,),  # noqa: E501
@@ -109,6 +110,7 @@ class SongDTO(ModelNormal):
 
 
     attribute_map = {
+        'song_id': 'songId',  # noqa: E501
         'title': 'title',  # noqa: E501
         'price': 'price',  # noqa: E501
         'stock': 'stock',  # noqa: E501
@@ -160,6 +162,7 @@ class SongDTO(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
+            song_id (int): [optional]  # noqa: E501
             title (str): [optional]  # noqa: E501
             price (float): [optional]  # noqa: E501
             stock (int): [optional]  # noqa: E501
@@ -249,6 +252,7 @@ class SongDTO(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
+            song_id (int): [optional]  # noqa: E501
             title (str): [optional]  # noqa: E501
             price (float): [optional]  # noqa: E501
             stock (int): [optional]  # noqa: E501
