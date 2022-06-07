@@ -36,4 +36,13 @@ setup.cfg
 setup.py
 test-requirements.txt
 test/__init__.py
+test/test_album_dto.py
+test/test_album_id.py
+test/test_artist_dto.py
+test/test_cart_line_item_dto.py
+test/test_default_api.py
+test/test_invoice_line_item_dto.py
+test/test_shopping_cart_dto.py
+test/test_song_dto.py
+test/test_user_data_dto.py
 tox.ini

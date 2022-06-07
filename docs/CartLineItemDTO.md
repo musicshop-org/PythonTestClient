@@ -4,6 +4,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**product_id** | **int** |  | [optional] 
 **medium_type** | **str** |  | [optional] 
 **name** | **str** |  | [optional] 
 **quantity** | **int** |  | [optional] 

@@ -1,5 +1,5 @@
 """
-    OpenAPIDefinition
+    Swagger Music Shop
 
     Music shop REST API  # noqa: E501
 

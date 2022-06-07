@@ -1,5 +1,5 @@
 """
-    OpenAPIDefinition
+    Swagger Music Shop
 
     Music shop REST API  # noqa: E501
 
@@ -96,6 +96,7 @@ class AlbumDTO(ModelNormal):
         """
         lazy_import()
         return {
+            'long_id': (int,),  # noqa: E501
             'title': (str,),  # noqa: E501
             'image_url': (str,),  # noqa: E501
             'price': (float,),  # noqa: E501
@@ -114,6 +115,7 @@ class AlbumDTO(ModelNormal):
 
 
     attribute_map = {
+        'long_id': 'longId',  # noqa: E501
         'title': 'title',  # noqa: E501
         'image_url': 'imageUrl',  # noqa: E501
         'price': 'price',  # noqa: E501
@@ -167,6 +169,7 @@ class AlbumDTO(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
+            long_id (int): [optional]  # noqa: E501
             title (str): [optional]  # noqa: E501
             image_url (str): [optional]  # noqa: E501
             price (float): [optional]  # noqa: E501
@@ -180,7 +183,7 @@ class AlbumDTO(ModelNormal):
         """
 
         _check_type = kwargs.pop('_check_type', True)
-        _spec_property_naming = kwargs.pop('_spec_property_naming', False)
+        _spec_property_naming = kwargs.pop('_spec_property_naming', True)
         _path_to_item = kwargs.pop('_path_to_item', ())
         _configuration = kwargs.pop('_configuration', None)
         _visited_composed_classes = kwargs.pop('_visited_composed_classes', ())
@@ -188,14 +191,18 @@ class AlbumDTO(ModelNormal):
         self = super(OpenApiModel, cls).__new__(cls)
 
         if args:
-            raise ApiTypeError(
-                "Invalid positional arguments=%s passed to %s. Remove those invalid positional arguments." % (
-                    args,
-                    self.__class__.__name__,
-                ),
-                path_to_item=_path_to_item,
-                valid_classes=(self.__class__,),
-            )
+            for arg in args:
+                if isinstance(arg, dict):
+                    kwargs.update(arg)
+                else:
+                    raise ApiTypeError(
+                        "Invalid positional arguments=%s passed to %s. Remove those invalid positional arguments." % (
+                            args,
+                            self.__class__.__name__,
+                        ),
+                        path_to_item=_path_to_item,
+                        valid_classes=(self.__class__,),
+                    )
 
         self._data_store = {}
         self._check_type = _check_type
@@ -258,6 +265,7 @@ class AlbumDTO(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
+            long_id (int): [optional]  # noqa: E501
             title (str): [optional]  # noqa: E501
             image_url (str): [optional]  # noqa: E501
             price (float): [optional]  # noqa: E501
@@ -277,14 +285,18 @@ class AlbumDTO(ModelNormal):
         _visited_composed_classes = kwargs.pop('_visited_composed_classes', ())
 
         if args:
-            raise ApiTypeError(
-                "Invalid positional arguments=%s passed to %s. Remove those invalid positional arguments." % (
-                    args,
-                    self.__class__.__name__,
-                ),
-                path_to_item=_path_to_item,
-                valid_classes=(self.__class__,),
-            )
+            for arg in args:
+                if isinstance(arg, dict):
+                    kwargs.update(arg)
+                else:
+                    raise ApiTypeError(
+                        "Invalid positional arguments=%s passed to %s. Remove those invalid positional arguments." % (
+                            args,
+                            self.__class__.__name__,
+                        ),
+                        path_to_item=_path_to_item,
+                        valid_classes=(self.__class__,),
+                    )
 
         self._data_store = {}
         self._check_type = _check_type

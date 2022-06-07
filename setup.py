@@ -1,5 +1,5 @@
 """
-    OpenAPIDefinition
+    Swagger Music Shop
 
     Music shop REST API  # noqa: E501
 
@@ -27,11 +27,11 @@ REQUIRES = [
 setup(
     name=NAME,
     version=VERSION,
-    description="OpenAPIDefinition",
+    description="Swagger Music Shop",
     author="OpenAPI Generator community",
     author_email="team@openapitools.org",
     url="",
-    keywords=["OpenAPI", "OpenAPI-Generator", "OpenAPIDefinition"],
+    keywords=["OpenAPI", "OpenAPI-Generator", "Swagger Music Shop"],
     python_requires=">=3.6",
     install_requires=REQUIRES,
     packages=find_packages(exclude=["test", "tests"]),

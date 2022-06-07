@@ -8,6 +8,7 @@ Method | HTTP request | Description
 [**add_songs_from_album_to_cart**](DefaultApi.md#add_songs_from_album_to_cart) | **POST** /api/albums/addSongsFromAlbumToCart | 
 [**add_songs_to_cart**](DefaultApi.md#add_songs_to_cart) | **POST** /api/albums/addSongsToCart | 
 [**buy_product**](DefaultApi.md#buy_product) | **POST** /api/shoppingCart/buyProducts | 
+[**buy_products_web**](DefaultApi.md#buy_products_web) | **POST** /api/shoppingCart/buyProductsWeb | 
 [**clear_shopping_cart**](DefaultApi.md#clear_shopping_cart) | **GET** /api/shoppingCart/clear | 
 [**display_shopping_cart**](DefaultApi.md#display_shopping_cart) | **GET** /api/shoppingCart/display | 
 [**find_album_by_album_id**](DefaultApi.md#find_album_by_album_id) | **GET** /api/album/{albumId} | 
@@ -46,6 +47,7 @@ with openapi_client.ApiClient() as api_client:
     api_instance = default_api.DefaultApi(api_client)
     cart_uuid = "CartUUID_example" # str |  (optional)
     album_dto = AlbumDTO(
+        long_id=1,
         title="title_example",
         image_url="image_url_example",
         price=3.14,
@@ -58,7 +60,7 @@ with openapi_client.ApiClient() as api_client:
         label="label_example",
         songs=[
             SongDTO(
-                song_id=1,
+                long_id=1,
                 title="title_example",
                 price=3.14,
                 stock=1,
@@ -146,6 +148,7 @@ with openapi_client.ApiClient() as api_client:
     api_instance = default_api.DefaultApi(api_client)
     cart_uuid = "CartUUID_example" # str |  (optional)
     album_dto = AlbumDTO(
+        long_id=1,
         title="title_example",
         image_url="image_url_example",
         price=3.14,
@@ -158,7 +161,7 @@ with openapi_client.ApiClient() as api_client:
         label="label_example",
         songs=[
             SongDTO(
-                song_id=1,
+                long_id=1,
                 title="title_example",
                 price=3.14,
                 stock=1,
@@ -247,7 +250,7 @@ with openapi_client.ApiClient() as api_client:
     cart_uuid = "CartUUID_example" # str |  (optional)
     song_dto = [
         SongDTO(
-            song_id=1,
+            long_id=1,
             title="title_example",
             price=3.14,
             stock=1,
@@ -261,6 +264,7 @@ with openapi_client.ApiClient() as api_client:
             ],
             in_album=[
                 AlbumDTO(
+                    long_id=1,
                     title="title_example",
                     image_url="image_url_example",
                     price=3.14,
@@ -398,6 +402,95 @@ No authorization required
 **403** | No permission |  -  |
 **404** | Album not found |  -  |
 **409** | Not enough stock available |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **buy_products_web**
+> str buy_products_web()
+
+
+
+### Example
+
+
+```python
+import time
+import openapi_client
+from openapi_client.api import default_api
+from openapi_client.model.cart_line_item_dto import CartLineItemDTO
+from pprint import pprint
+# Defining the host is optional and defaults to http://localhost:8080/musicshop-1.0
+# See configuration.py for a list of all supported configuration parameters.
+configuration = openapi_client.Configuration(
+    host = "http://localhost:8080/musicshop-1.0"
+)
+
+
+# Enter a context with an instance of the API client
+with openapi_client.ApiClient() as api_client:
+    # Create an instance of the API class
+    api_instance = default_api.DefaultApi(api_client)
+    authorization = "Authorization_example" # str |  (optional)
+    cart_uuid = "CartUUID_example" # str |  (optional)
+    cart_line_item_dto = [
+        CartLineItemDTO(
+            product_id=1,
+            medium_type="CD",
+            name="name_example",
+            quantity=1,
+            price=3.14,
+            stock=1,
+            image_url="image_url_example",
+            product_type="SONG",
+            artists=[
+                "artists_example",
+            ],
+        ),
+    ] # [CartLineItemDTO] |  (optional)
+
+    # example passing only required values which don't have defaults set
+    # and optional values
+    try:
+        api_response = api_instance.buy_products_web(authorization=authorization, cart_uuid=cart_uuid, cart_line_item_dto=cart_line_item_dto)
+        pprint(api_response)
+    except openapi_client.ApiException as e:
+        print("Exception when calling DefaultApi->buy_products_web: %s\n" % e)
+```
+
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **authorization** | **str**|  | [optional]
+ **cart_uuid** | **str**|  | [optional]
+ **cart_line_item_dto** | [**[CartLineItemDTO]**](CartLineItemDTO.md)|  | [optional]
+
+### Return type
+
+**str**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: text/plain
+
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Buy product successful |  -  |
+**400** | Request parameter not ok |  -  |
+**401** | Invalid JWT token provided |  -  |
+**403** | No permission |  -  |
+**404** | Album not found |  -  |
+**409** | Not enough stock available |  -  |
+**500** | Internal server error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -901,6 +994,7 @@ with openapi_client.ApiClient() as api_client:
     api_instance = default_api.DefaultApi(api_client)
     cart_uuid = "CartUUID_example" # str |  (optional)
     cart_line_item_dto = CartLineItemDTO(
+        product_id=1,
         medium_type="CD",
         name="name_example",
         quantity=1,
