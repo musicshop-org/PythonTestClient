@@ -1,9 +1,9 @@
-from openapi_client.api import default_api
-from openapi_client import api_client
+from openapi.openapi_client.api import default_api
+from openapi.openapi_client import api_client
 
-from openapi_client.model.album_dto import AlbumDTO
-from openapi_client.model.invoice_line_item_dto import InvoiceLineItemDTO
-from openapi_client.model.user_data_dto import UserDataDTO
+from openapi.openapi_client.model.album_dto import AlbumDTO
+from openapi.openapi_client.model.invoice_line_item_dto import InvoiceLineItemDTO
+from openapi.openapi_client.model.user_data_dto import UserDataDTO
 
 import uuid
 

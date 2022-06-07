@@ -1,5 +1,8 @@
 {
   "devDependencies": {
     "@openapitools/openapi-generator-cli": "^2.5.1"
+  },
+  "scripts": {
+    "createApiPy": "npx @openapitools/openapi-generator-cli generate -i http://localhost:8080/musicshop-1.0/api/openapi.json -g python -o ./openapi --additional-properties=supportsES6=true --skip-validate-spec"
   }
 }
