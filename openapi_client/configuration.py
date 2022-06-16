@@ -80,7 +80,7 @@ class Configuration(object):
 
     _default = None
 
-    def __init__(self, host=None,
+    def __init__(self, host="http://10.0.40.162:8080/musicshop-1.0",
                  api_key=None, api_key_prefix=None,
                  access_token=None,
                  username=None, password=None,
@@ -92,7 +92,7 @@ class Configuration(object):
                  ):
         """Constructor
         """
-        self._base_path = "http://localhost:8080/musicshop-1.0" if host is None else host
+        self._base_path = "http://10.0.40.162:8080/musicshop-1.0" if host is None else host
         """Default Base url
         """
         self.server_index = 0 if server_index is None and host is None else server_index
