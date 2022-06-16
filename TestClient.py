@@ -129,7 +129,9 @@ while not end:
                             mediumType=album.get('medium_type'),
                             price=album.get('price'),
                             stock=album.get('stock'),
-                            quantityToAddToCart=quantity
+                            quantityToAddToCart=quantity,
+                            songs=album.get('songs'),
+                            imageUrl=""
                         )
 
                         print("Adding ALBUM " + album_number + " to shopping cart ...")
@@ -248,6 +250,12 @@ while not end:
 
                     back = True
                     command_valid = True
+        # Quit
+        elif command == "q":
+            print("Stopping python test client ...")
+
+            end = True
+            command_valid = True
 
         # Unknown command
         else:
@@ -255,12 +263,7 @@ while not end:
 
             command_valid = False
 
-        # Quit
-        if command == "q":
-            print("Stopping python test client ...")
 
-            end = True
-            command_valid = True
 
 # End
 print()

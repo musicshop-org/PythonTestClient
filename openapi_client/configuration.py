@@ -391,7 +391,11 @@ class Configuration(object):
         return [
             {
                 'url': "http://localhost:8080/musicshop-1.0",
-                'description': "Music shop REST",
+                'description': "Music shop REST-Local",
+            },
+            {
+                'url': "http://10.0.40.162:8080/musicshop-1.0",
+                'description': "Music shop REST FHV1",
             }
         ]
 
