@@ -5,6 +5,8 @@ from openapi_client.model.album_dto import AlbumDTO
 from openapi_client.model.invoice_line_item_dto import InvoiceLineItemDTO
 from openapi_client.model.user_data_dto import UserDataDTO
 
+import uuid
+
 
 def response_to_dict(data):
     dictionaries = []
@@ -31,6 +33,7 @@ def get_user_data():
 def get_authorized_rest_service(token):
     client = api_client.ApiClient()
     client.set_default_header("Authorization", token)
+    client.set_default_header("CartUUID", str(uuid.uuid4()))
 
     return default_api.DefaultApi(client)
 
@@ -73,7 +76,7 @@ while not end:
 
                 print("Searching for albums containing a song with title '" + song_title.upper() + "' ...")
 
-                response = authorized_rest_service.find_albums_by_song_title(song_title)
+                response = authorized_rest_service.find_albums_by_song_title_physical(song_title)
                 albums = response_to_dict(response)
 
                 album_count = 1
@@ -126,12 +129,14 @@ while not end:
                             mediumType=album.get('medium_type'),
                             price=album.get('price'),
                             stock=album.get('stock'),
-                            quantityToAddToCart=quantity
+                            quantityToAddToCart=quantity,
+                            songs=album.get('songs'),
+                            imageUrl=""
                         )
 
                         print("Adding ALBUM " + album_number + " to shopping cart ...")
 
-                        authorized_rest_service.add_to_cart(album_dto=req)
+                        authorized_rest_service.add_albums_to_cart(album_dto=req)
 
                         # add search result to cart
                         print()
@@ -245,6 +250,12 @@ while not end:
 
                     back = True
                     command_valid = True
+        # Quit
+        elif command == "q":
+            print("Stopping python test client ...")
+
+            end = True
+            command_valid = True
 
         # Unknown command
         else:
@@ -252,12 +263,7 @@ while not end:
 
             command_valid = False
 
-        # Quit
-        if command == "q":
-            print("Stopping python test client ...")
 
-            end = True
-            command_valid = True
 
 # End
 print()
